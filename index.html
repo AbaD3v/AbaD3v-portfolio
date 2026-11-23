@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#151514">
+  <meta name="description" content="Маметжан Абзал (AbaD3v). Портфолио разработчика: веб-проекты, боты и обучение языковых моделей.">
+  <title>Маметжан Абзал — AbaD3v</title>
+  <link rel="icon" href="./assets/mark.png" type="image/png">
+  <link rel="preload" href="./assets/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./portfolio.js"></script>
+  <script type="module" src="./orbital.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Перейти к содержимому</a>
+  <header class="header wrap" id="top">
+    <a class="brand" href="#top" aria-label="AbaD3v, в начало"><span class="mark" aria-hidden="true">A<span>.</span></span>AbaD3v</a>
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="#projects">Проекты</a><a href="#models">Модели</a><a href="#about">Обо мне</a><a href="#profiles">Профили</a>
+    </nav>
+    <a class="header-link" href="https://github.com/AbaD3v">GitHub</a>
+  </header>
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="indicator"></span> Маметжан Абзал</p>
+        <h1 id="hero-title">AbaD3v<span>.</span></h1>
+        <p class="hero-lead">Разрабатываю сайты и ботов.<br>Обучаю языковые модели.</p>
+        <div class="actions">
+          <a class="button solid" href="#projects">Смотреть проекты</a>
+          <a class="button subtle" href="https://huggingface.co/AbaD3v">Hugging Face</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <canvas class="orbital-canvas"></canvas>
+      </div>
+      <button class="orbital-toggle" type="button" aria-label="Приостановить вращение портала" hidden>
+        <span aria-hidden="true"></span>
+      </button>
+    </section>
+    <section class="featured wrap section" id="projects" aria-labelledby="projects-title">
+      <div class="section-head">
+        <h2 id="projects-title">Избранные проекты<span>.</span></h2>
+        <a class="inline-link" href="#catalog">Весь каталог</a>
+      </div>
+      <div class="featured-grid">
+        <article class="feature feature-moon">
+          <div class="cover cover-moon" aria-hidden="true">
+            <div class="moon-orbits"><span></span><span></span><span></span></div>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">ЯЗЫКОВЫЕ МОДЕЛИ</p>
+            <h3>MoonAI</h3>
+            <p>Серия экспериментов с обучением языковых моделей. В веб-демо можно попробовать раннюю модель на 729 млн параметров. На Hugging Face опубликованы другие версии, включая модель на базе Qwen3 8B, и датасеты для обучения.</p>
+            <ul class="stack" aria-label="Технологии"><li>React</li><li>TypeScript</li><li>Tauri</li><li>Qwen3</li></ul>
+            <div class="feature-links">
+              <a class="project-demo" href="https://moonai-psi.vercel.app">Открыть демо</a>
+              <a href="#models" aria-label="Модели и датасеты MoonAI">Модели и датасеты</a>
+              <a href="https://github.com/AbaD3v/moonai" aria-label="Исходный код MoonAI на GitHub">GitHub</a>
+            </div>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="cover cover-voice" aria-hidden="true">
+            <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">РЕЧЬ И ИИ</p>
+            <h3>Voxa</h3>
+            <p>Практика русского, английского и казахского через голосовые диалоги с ИИ. После разговора Voxa разбирает ошибки. Я основатель и ведущий разработчик проекта.</p>
+            <ul class="stack" aria-label="Технологии"><li>React</li><li>FastAPI</li></ul>
+            <div class="feature-links">
+              <a class="project-demo" href="https://aba-d3v-frontend.vercel.app">Открыть Voxa</a>
+              <a href="https://github.com/AbaD3v/AbaD3v-Frontend" aria-label="Исходный код Voxa на GitHub">GitHub</a>
+            </div>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="cover cover-sql" aria-hidden="true">
+            <div class="editor"><span class="editor-dots">● ● ●</span><code><b>SELECT</b> name, price<br><b>FROM</b> products<br><b>ORDER BY</b> price;</code></div>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">ПРАКТИКУМ</p>
+            <h3>CodeProof SQL</h3>
+            <p>15 задач на базе интернет-магазина. Можно изучить схему, написать запрос в редакторе и проверить результат в SQLite прямо в браузере.</p>
+            <ul class="stack" aria-label="Технологии"><li>SQLite</li><li>WebAssembly</li><li>CodeMirror</li></ul>
+            <div class="feature-links">
+              <a class="project-demo" href="https://codeproof-sql-practicum.auburnbrass1.chatgpt.site">Открыть практикум</a>
+              <a href="https://github.com/AbaD3v/AbaD3v-AIU" aria-label="Исходный код CodeProof SQL на GitHub">GitHub</a>
+            </div>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="cover cover-agro" aria-hidden="true">
+            <div class="field"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">МАШИННОЕ ОБУЧЕНИЕ</p>
+            <h3>AgroAI</h3>
+            <p>Платформа для анализа заявок на сельхозсубсидии. CatBoost рассчитывает оценку заявки, а Qwen анализирует данные через Ollama.</p>
+            <ul class="stack" aria-label="Технологии"><li>Next.js</li><li>CatBoost</li><li>Qwen</li></ul>
+            <a href="https://github.com/AbaD3v/AgroAI" aria-label="Исходный код AgroAI на GitHub">Код на GitHub</a>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="cover cover-chat" aria-hidden="true">
+            <div class="chat-diagram"><i></i><i></i><i></i></div>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">ЯЗЫКОВЫЕ МОДЕЛИ</p>
+            <h3>EvoMind</h3>
+            <p>Веб-чат с MoonAI на базе Qwen3. История диалогов позволяет возвращаться к предыдущим беседам.</p>
+            <ul class="stack" aria-label="Технологии"><li>JavaScript</li><li>MoonAI</li><li>Qwen3</li></ul>
+            <div class="feature-links">
+              <a class="project-demo" href="https://evomind-two.vercel.app">Открыть чат</a>
+              <a href="https://github.com/AbaD3v/EvoMind" aria-label="Исходный код EvoMind на GitHub">GitHub</a>
+            </div>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="cover cover-neighbors" aria-hidden="true">
+            <div class="neighbors-diagram"><i></i><i></i></div>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">ЛИЧНЫЙ ПРОЕКТ</p>
+            <h3>Korshi.kz</h3>
+            <p>MVP платформы для поиска соседей по аренде жилья. Опубликовал веб-версию и собрал отдельный чат-бот на Hugging Face.</p>
+            <ul class="stack" aria-label="Технологии"><li>Next.js</li><li>TypeScript</li><li>Prisma</li></ul>
+            <div class="feature-links">
+              <a class="project-demo" href="https://www.korshikz.space/">Открыть Korshi.kz</a>
+              <a href="https://github.com/AbaD3v/korshikz">Код MVP</a>
+            </div>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="cover cover-shop" aria-hidden="true">
+            <div class="shop-diagram"><i></i><i></i><i></i></div>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">ИНТЕРНЕТ-МАГАЗИН</p>
+            <h3>SmartShop</h3>
+            <p>Магазин смартфонов с каталогом, корзиной и оформлением самовывоза. Пункты выдачи собраны на карте.</p>
+            <ul class="stack" aria-label="Технологии"><li>Next.js</li><li>Supabase</li><li>Leaflet</li></ul>
+            <div class="feature-links">
+              <a class="project-demo" href="https://smart-shop-eta-five.vercel.app">Открыть магазин</a>
+              <a href="https://github.com/AbaD3v/SmartShop" aria-label="Исходный код SmartShop на GitHub">GitHub</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="catalog section wrap" id="catalog" aria-labelledby="catalog-title">
+      <div class="section-head">
+        <h2 id="catalog-title">Каталог проектов<span>.</span></h2>
+        <p class="section-meta" id="catalog-count" aria-live="polite"></p>
+      </div>
+      <div id="filters" class="filters" aria-label="Фильтры проектов" hidden>
+        <div class="tabs" aria-label="Категории проектов">
+          <button type="button" data-category="all" aria-pressed="true">Все</button>
+          <button type="button" data-category="demo" aria-pressed="false">С демо</button>
+          <button type="button" data-category="ai" aria-pressed="false">ИИ и данные</button>
+          <button type="button" data-category="web" aria-pressed="false">Веб</button>
+          <button type="button" data-category="edu" aria-pressed="false">Обучение</button>
+          <button type="button" data-category="other" aria-pressed="false">Другие</button>
+        </div>
+        <label class="search"><span class="search-icon" aria-hidden="true"></span><input type="search" id="query" placeholder="Проект или технология" aria-label="Найти проект или технологию"></label>
+      </div>
+      <div id="project-list" class="project-list"></div>
+      <p class="empty" id="empty" hidden>По этому запросу ничего не найдено.</p>
+      <noscript><p>Включите JavaScript для просмотра каталога или откройте проекты на <a href="https://github.com/AbaD3v?tab=repositories">GitHub</a> и <a href="https://huggingface.co/AbaD3v">Hugging Face</a>.</p></noscript>
+    </section>
+    <section class="models section wrap" id="models" aria-labelledby="models-title">
+      <div class="section-head">
+        <h2 id="models-title">Модели и данные<span>.</span></h2>
+        <a class="inline-link" href="https://huggingface.co/AbaD3v">Hugging Face</a>
+      </div>
+      <div class="model-grid">
+        <div>
+          <h3>Модели</h3>
+          <ul>
+            <li><a href="https://huggingface.co/AbaD3v/MoonAI8b-qwen3">MoonAI8b-qwen3</a></li>
+            <li><a href="https://huggingface.co/AbaD3v/MoonAI700M-V1.2">MoonAI700M-V1.2</a></li>
+            <li><a href="https://huggingface.co/AbaD3v/MoonAI700M-V1.1">MoonAI700M-V1.1</a></li>
+            <li><a href="https://huggingface.co/AbaD3v/korshikzz">korshikzz</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Датасеты</h3>
+          <ul>
+            <li><a href="https://huggingface.co/datasets/AbaD3v/moonai-coder-ru">moonai-coder-ru</a></li>
+            <li><a href="https://huggingface.co/datasets/AbaD3v/moonai-sft-ru">moonai-sft-ru</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Spaces</h3>
+          <ul>
+            <li><a href="https://huggingface.co/spaces/AbaD3v/MoonAI-8B_qlora_Qwen3">MoonAI-8B_qlora_Qwen3</a></li>
+            <li><a href="https://huggingface.co/spaces/AbaD3v/voxa-voice-engine">voxa-voice-engine</a></li>
+            <li><a href="https://huggingface.co/spaces/AbaD3v/moonAI-backend-730m">moonAI-backend-730m</a></li>
+            <li><a href="https://huggingface.co/spaces/AbaD3v/MoonAi-V1.0-150M">MoonAi-V1.0-150M</a></li>
+            <li><a href="https://huggingface.co/spaces/AbaD3v/korshikz-chatbot">korshikz-chatbot</a></li>
+            <li><a href="https://huggingface.co/spaces/AbaD3v/korshikz">korshikz</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="about section wrap" id="about" aria-labelledby="about-title">
+      <div>
+        <h2 id="about-title">Обо мне<span>.</span></h2>
+        <p class="about-lead">Меня зовут Маметжан Абзал. В проектах использую ник AbaD3v.</p>
+        <p class="body-muted">Делаю сайты, пишу бэкенд, работаю с базами данных и настраиваю домены. Разрабатываю ботов для Telegram и ВКонтакте, обучаю языковые модели на Hugging Face. В Voxa я основатель и ведущий разработчик. Сейчас изучаю C++ и Java.</p>
+      </div>
+      <dl class="skills">
+        <div><dt>Веб и бэкенд</dt><dd>React, Next.js, TypeScript, FastAPI</dd></div>
+        <div><dt>Базы данных и домены</dt><dd>SQLite, Supabase, настройка доменов</dd></div>
+        <div><dt>Модели и боты</dt><dd>Python, Qwen, Hugging Face, Telegram, ВКонтакте</dd></div>
+        <div><dt>Изучаю</dt><dd>C++, Java</dd></div>
+      </dl>
+    </section>
+    <section class="profiles section wrap" id="profiles" aria-labelledby="profiles-title">
+      <h2 id="profiles-title">Профили<span>.</span></h2>
+      <div class="profile-links">
+        <a href="https://github.com/AbaD3v"><strong>GitHub</strong><span>Репозитории и исходный код</span></a>
+        <a href="https://huggingface.co/AbaD3v"><strong>Hugging Face</strong><span>Модели и демо</span></a>
+      </div>
+    </section>
+  </main>
+  <footer class="footer wrap"><span>Маметжан Абзал · AbaD3v</span><a href="#top">В начало</a></footer>
+</body>
+</html>
