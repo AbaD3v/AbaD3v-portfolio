@@ -37,6 +37,82 @@ const fragmentSource = `
   }
 `;
 
+const atmosphereVertexSource = `
+  attribute vec2 corner;
+  varying vec2 uv;
+
+  void main() {
+    uv = corner * 0.5 + 0.5;
+    gl_Position = vec4(corner, 0.0, 1.0);
+  }
+`;
+
+const atmosphereFragmentSource = `
+  #ifdef GL_FRAGMENT_PRECISION_HIGH
+    precision highp float;
+  #else
+    precision mediump float;
+  #endif
+
+  varying vec2 uv;
+  uniform float phase;
+  uniform float aspect;
+
+  float hash(vec2 p) {
+    vec3 h = fract(vec3(p.xyx) * 0.1031);
+    h += dot(h, h.yzx + 19.19);
+    return fract((h.x + h.y) * h.z);
+  }
+
+  float noise(vec2 p) {
+    vec2 cell = floor(p);
+    vec2 f = fract(p);
+    vec2 blend = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(cell), hash(cell + vec2(1.0, 0.0)), blend.x),
+               mix(hash(cell + vec2(0.0, 1.0)), hash(cell + 1.0), blend.x), blend.y);
+  }
+
+  float wisps(vec2 p) {
+    mat2 rotate = mat2(0.8, -0.6, 0.6, 0.8);
+    return 0.55 * noise(p) + 0.29 * noise(rotate * p * 2.08 + 6.7)
+         + 0.16 * noise(p * 4.31 + 12.6);
+  }
+
+  void main() {
+    vec2 wind = vec2(cos(phase), sin(phase));
+    vec2 p = vec2((uv.x - 0.50) * min(aspect, 1.9), uv.y);
+    float edge = smoothstep(0.0, 0.11, uv.x) * smoothstep(0.0, 0.10, 1.0 - uv.x);
+
+    // Curl and stretch the noise into long streams that drift around the ring.
+    vec2 stream = vec2(p.x * 2.8, (p.y - p.x * 0.24) * 7.5);
+    vec2 bend = vec2(noise(stream + wind * 1.28),
+                     noise(stream + vec2(4.7, 8.3) - wind.yx));
+    float density = wisps(stream + (bend - 0.5) * 2.6 - wind * vec2(1.22, 1.7));
+    float arc = 0.30 + 0.17 * sin(p.x * 3.9 + wind.x * 0.62) + 0.05 * wind.y;
+    float plume = 1.0 - smoothstep(0.018, 0.24, abs(p.y - arc));
+    float upper = 1.0 - smoothstep(0.035, 0.28, abs(p.y - 0.74 - p.x * 0.42 + 0.06 * wind.y));
+    float fog = smoothstep(0.31, 0.73, density) * (0.38 * plume + 0.31 * upper);
+    fog *= edge * smoothstep(0.14, 0.25, p.y) * smoothstep(0.0, 0.17, 1.0 - p.y);
+    vec3 smokeColor = mix(vec3(0.33, 0.065, 0.035), vec3(1.0, 0.39, 0.14), density);
+
+    // Broken ripples spread across the floor and catch the light from the portal.
+    float floorY = p.y + 0.013 * sin(p.x * 12.0 + phase);
+    float floorMask = smoothstep(0.012, 0.045, p.y) * (1.0 - smoothstep(0.15, 0.25, p.y));
+    float spread = mix(1.0, 0.44, smoothstep(0.02, 0.19, p.y));
+    float width = (p.x - 0.12 - wind.x * 0.06) / spread;
+    float flood = 1.0 - smoothstep(0.03, 0.56, abs(width));
+    float breaks = noise(vec2(p.x * 15.0, floorY * 57.0) + wind * 0.7);
+    float ripple = sin(floorY * 177.0 + phase * 3.0 + breaks * 2.6);
+    float glint = smoothstep(0.55, 0.96, ripple) * smoothstep(0.28, 0.76, breaks);
+    float pulse = 0.68 + 0.19 * sin(phase * 2.0 + p.x * 8.0) + 0.11 * wind.y;
+    float shine = edge * floorMask * flood * pulse * (0.14 + 0.53 * glint);
+    vec3 lightColor = mix(vec3(0.91, 0.19, 0.045), vec3(1.0, 0.67, 0.32), glint);
+
+    vec4 smoke = vec4(smokeColor * fog, fog);
+    gl_FragColor = vec4(lightColor * shine, shine) + smoke * (1.0 - shine);
+  }
+`;
+
 function makePortal() {
   const vertices = [];
   let seed = 2914;
@@ -121,7 +197,7 @@ function makePortal() {
   return new Float32Array(vertices);
 }
 
-function createProgram(gl) {
+function createProgram(gl, vertexCode, fragmentCode) {
   function compile(type, source) {
     const shader = gl.createShader(type);
     gl.shaderSource(shader, source);
@@ -129,8 +205,8 @@ function createProgram(gl) {
     return shader;
   }
 
-  const vertex = compile(gl.VERTEX_SHADER, vertexSource);
-  const fragment = compile(gl.FRAGMENT_SHADER, fragmentSource);
+  const vertex = compile(gl.VERTEX_SHADER, vertexCode);
+  const fragment = compile(gl.FRAGMENT_SHADER, fragmentCode);
   const program = gl.createProgram();
   gl.attachShader(program, vertex);
   gl.attachShader(program, fragment);
@@ -142,49 +218,83 @@ function createProgram(gl) {
   return null;
 }
 
+function createAtmosphere(gl) {
+  const program = createProgram(gl, atmosphereVertexSource, atmosphereFragmentSource);
+  if (!program) return null;
+
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+
+  const corner = gl.getAttribLocation(program, 'corner');
+  const phase = gl.getUniformLocation(program, 'phase');
+  const aspect = gl.getUniformLocation(program, 'aspect');
+
+  return (elapsed, ratio) => {
+    gl.disable(gl.BLEND);
+    gl.useProgram(program);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.enableVertexAttribArray(corner);
+    gl.vertexAttribPointer(corner, 2, gl.FLOAT, false, 0, 0);
+    gl.uniform1f(phase, (elapsed % 16) * turn / 16);
+    gl.uniform1f(aspect, ratio);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.disableVertexAttribArray(corner);
+  };
+}
+
 function createPortal(canvas) {
   const gl = canvas.getContext('webgl', { alpha: true, antialias: true, powerPreference: 'low-power' });
   if (!gl) return null;
 
-  const program = createProgram(gl);
+  const program = createProgram(gl, vertexSource, fragmentSource);
   if (!program) return null;
 
   const vertices = makePortal();
-  gl.useProgram(program);
   const buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 
-  for (const [name, offset] of [['point', 0], ['detail', 12]]) {
-    const location = gl.getAttribLocation(program, name);
-    gl.enableVertexAttribArray(location);
-    gl.vertexAttribPointer(location, 3, gl.FLOAT, false, 24, offset);
-  }
-
+  const point = gl.getAttribLocation(program, 'point');
+  const detail = gl.getAttribLocation(program, 'detail');
   const fit = gl.getUniformLocation(program, 'fit');
   const time = gl.getUniformLocation(program, 'time');
+  const drawAtmosphere = createAtmosphere(gl);
+  let scale = 1;
+
   gl.clearColor(0, 0, 0, 0);
-  gl.enable(gl.BLEND);
   gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
   function draw(elapsed) {
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    const { width, height } = canvas;
+    if (drawAtmosphere) drawAtmosphere(elapsed, width / height);
+    else gl.clear(gl.COLOR_BUFFER_BIT);
+
+    gl.useProgram(program);
+    gl.enable(gl.BLEND);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.enableVertexAttribArray(point);
+    gl.enableVertexAttribArray(detail);
+    gl.vertexAttribPointer(point, 3, gl.FLOAT, false, 24, 0);
+    gl.vertexAttribPointer(detail, 3, gl.FLOAT, false, 24, 12);
+    gl.uniform2f(fit, scale / width, scale / height);
     gl.uniform1f(time, elapsed);
     gl.drawArrays(gl.LINES, 0, vertices.length / 6);
+    gl.disableVertexAttribArray(point);
+    gl.disableVertexAttribArray(detail);
   }
 
   function resize(elapsed) {
     const { width, height } = canvas.getBoundingClientRect();
-    const density = Math.min(window.devicePixelRatio || 1, 1.6);
+    const density = Math.min(window.devicePixelRatio || 1, 1.35, 1280 / Math.max(width, 1));
     canvas.width = Math.max(1, Math.round(width * density));
     canvas.height = Math.max(1, Math.round(height * density));
     gl.viewport(0, 0, canvas.width, canvas.height);
-    const scale = Math.min(canvas.width, canvas.height) * 0.565;
-    gl.uniform2f(fit, scale / canvas.width, scale / canvas.height);
+    scale = Math.min(canvas.width, canvas.height) * 0.565;
     draw(elapsed);
   }
 
-  return { draw, resize };
+  return { draw, resize, hasAtmosphere: Boolean(drawAtmosphere) };
 }
 
 function mountHero(art) {
@@ -228,10 +338,12 @@ function mountHero(art) {
       portal = null;
       sizeObserver.disconnect();
       art.classList.remove('is-rendered');
+      art.classList.remove('has-atmosphere');
       sync();
     });
     portal.resize(elapsed);
     art.classList.add('is-rendered');
+    art.classList.toggle('has-atmosphere', portal.hasAtmosphere);
   }
   if (watchVisibility) {
     const viewObserver = new IntersectionObserver(([entry]) => {
