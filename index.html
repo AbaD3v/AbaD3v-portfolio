@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#151514">
+  <meta name="theme-color" content="#0e0f11">
   <meta name="description" content="Маметжан Абзал (AbaD3v). Портфолио разработчика: веб-проекты, боты и обучение языковых моделей.">
   <title>Маметжан Абзал — AbaD3v</title>
   <link rel="icon" href="./assets/mark.png" type="image/png">
@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="./styles.css">
   <script type="module" src="./portfolio.js"></script>
   <script type="module" src="./orbital.js"></script>
+  <script type="module" src="./project-models.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Перейти к содержимому</a>
@@ -33,6 +34,7 @@
         </div>
       </div>
       <div class="hero-art" aria-hidden="true">
+        <div class="hero-glow"></div>
         <canvas class="orbital-canvas"></canvas>
       </div>
       <button class="orbital-toggle" type="button" aria-label="Приостановить вращение портала" hidden>
@@ -42,17 +44,26 @@
     <section class="featured wrap section" id="projects" aria-labelledby="projects-title">
       <div class="section-head">
         <h2 id="projects-title">Избранные проекты<span>.</span></h2>
-        <a class="inline-link" href="#catalog">Весь каталог</a>
+        <div class="showcase-actions">
+          <button class="model-toggle" type="button" hidden>Пауза 3D</button>
+          <a class="inline-link" href="#catalog">Весь каталог</a>
+        </div>
       </div>
       <div class="featured-grid">
         <article class="feature feature-moon">
-          <div class="cover cover-moon" aria-hidden="true">
-            <div class="moon-orbits"><span></span><span></span><span></span></div>
+          <div class="cover cover-moon" data-model="moon">
+            <img class="project-poster" src="./assets/models/moon.webp" width="660" height="420" decoding="async" alt="">
+            <canvas class="project-canvas" width="660" height="420" aria-hidden="true"></canvas>
+            <button class="model-open" type="button" aria-haspopup="dialog" aria-controls="model-inspector" hidden>Рассмотреть 3D</button>
           </div>
           <div class="feature-body">
             <p class="eyebrow">ЯЗЫКОВЫЕ МОДЕЛИ</p>
             <h3>MoonAI</h3>
-            <p>Серия экспериментов с обучением языковых моделей. В веб-демо можно попробовать раннюю модель на 729 млн параметров. На Hugging Face опубликованы другие версии, включая модель на базе Qwen3 8B, и датасеты для обучения.</p>
+            <p>Серия экспериментов с обучением языковых моделей. Раннюю модель можно попробовать в браузере, а более новые версии и датасеты доступны на Hugging Face.</p>
+            <dl class="moon-facts">
+              <div><dt>729 млн</dt><dd>параметров в веб-демо</dd></div>
+              <div><dt>Qwen3 8B</dt><dd>база одной из версий</dd></div>
+            </dl>
             <ul class="stack" aria-label="Технологии"><li>React</li><li>TypeScript</li><li>Tauri</li><li>Qwen3</li></ul>
             <div class="feature-links">
               <a class="project-demo" href="https://moonai-psi.vercel.app">Открыть демо</a>
@@ -61,66 +72,11 @@
             </div>
           </div>
         </article>
-        <article class="feature">
-          <div class="cover cover-voice" aria-hidden="true">
-            <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          </div>
-          <div class="feature-body">
-            <p class="eyebrow">РЕЧЬ И ИИ</p>
-            <h3>Voxa</h3>
-            <p>Практика русского, английского и казахского через голосовые диалоги с ИИ. После разговора Voxa разбирает ошибки. Я основатель и ведущий разработчик проекта.</p>
-            <ul class="stack" aria-label="Технологии"><li>React</li><li>FastAPI</li></ul>
-            <div class="feature-links">
-              <a class="project-demo" href="https://aba-d3v-frontend.vercel.app">Открыть Voxa</a>
-              <a href="https://github.com/AbaD3v/AbaD3v-Frontend" aria-label="Исходный код Voxa на GitHub">GitHub</a>
-            </div>
-          </div>
-        </article>
-        <article class="feature">
-          <div class="cover cover-sql" aria-hidden="true">
-            <div class="editor"><span class="editor-dots">● ● ●</span><code><b>SELECT</b> name, price<br><b>FROM</b> products<br><b>ORDER BY</b> price;</code></div>
-          </div>
-          <div class="feature-body">
-            <p class="eyebrow">ПРАКТИКУМ</p>
-            <h3>CodeProof SQL</h3>
-            <p>15 задач на базе интернет-магазина. Можно изучить схему, написать запрос в редакторе и проверить результат в SQLite прямо в браузере.</p>
-            <ul class="stack" aria-label="Технологии"><li>SQLite</li><li>WebAssembly</li><li>CodeMirror</li></ul>
-            <div class="feature-links">
-              <a class="project-demo" href="https://codeproof-sql-practicum.auburnbrass1.chatgpt.site">Открыть практикум</a>
-              <a href="https://github.com/AbaD3v/AbaD3v-AIU" aria-label="Исходный код CodeProof SQL на GitHub">GitHub</a>
-            </div>
-          </div>
-        </article>
-        <article class="feature">
-          <div class="cover cover-agro" aria-hidden="true">
-            <div class="field"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          </div>
-          <div class="feature-body">
-            <p class="eyebrow">МАШИННОЕ ОБУЧЕНИЕ</p>
-            <h3>AgroAI</h3>
-            <p>Платформа для анализа заявок на сельхозсубсидии. CatBoost рассчитывает оценку заявки, а Qwen анализирует данные через Ollama.</p>
-            <ul class="stack" aria-label="Технологии"><li>Next.js</li><li>CatBoost</li><li>Qwen</li></ul>
-            <a href="https://github.com/AbaD3v/AgroAI" aria-label="Исходный код AgroAI на GitHub">Код на GitHub</a>
-          </div>
-        </article>
-        <article class="feature">
-          <div class="cover cover-chat" aria-hidden="true">
-            <div class="chat-diagram"><i></i><i></i><i></i></div>
-          </div>
-          <div class="feature-body">
-            <p class="eyebrow">ЯЗЫКОВЫЕ МОДЕЛИ</p>
-            <h3>EvoMind</h3>
-            <p>Веб-чат с MoonAI на базе Qwen3. История диалогов позволяет возвращаться к предыдущим беседам.</p>
-            <ul class="stack" aria-label="Технологии"><li>JavaScript</li><li>MoonAI</li><li>Qwen3</li></ul>
-            <div class="feature-links">
-              <a class="project-demo" href="https://evomind-two.vercel.app">Открыть чат</a>
-              <a href="https://github.com/AbaD3v/EvoMind" aria-label="Исходный код EvoMind на GitHub">GitHub</a>
-            </div>
-          </div>
-        </article>
-        <article class="feature">
-          <div class="cover cover-neighbors" aria-hidden="true">
-            <div class="neighbors-diagram"><i></i><i></i></div>
+        <article class="feature feature-wide">
+          <div class="cover cover-neighbors" data-model="neighbors">
+            <img class="project-poster" src="./assets/models/neighbors.webp" width="660" height="420" loading="lazy" decoding="async" alt="">
+            <canvas class="project-canvas" width="660" height="420" aria-hidden="true"></canvas>
+            <button class="model-open" type="button" aria-haspopup="dialog" aria-controls="model-inspector" hidden>Рассмотреть 3D</button>
           </div>
           <div class="feature-body">
             <p class="eyebrow">ЛИЧНЫЙ ПРОЕКТ</p>
@@ -133,9 +89,45 @@
             </div>
           </div>
         </article>
+        <article class="feature feature-wide">
+          <div class="cover cover-dida" data-model="dida">
+            <img class="project-poster" src="./assets/models/dida.webp" width="660" height="420" loading="lazy" decoding="async" alt="">
+            <canvas class="project-canvas" width="660" height="420" aria-hidden="true"></canvas>
+            <button class="model-open" type="button" aria-haspopup="dialog" aria-controls="model-inspector" hidden>Рассмотреть 3D</button>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">Тренажёр</p>
+            <h3>DidaType</h3>
+            <p>Тренажёр для проверки скорости и точности печати. После теста показывает скорость и ошибки.</p>
+            <ul class="stack" aria-label="Технологии"><li>Next.js</li><li>TypeScript</li><li>Supabase</li></ul>
+            <div class="feature-links">
+              <a class="project-demo" href="https://dida-type.vercel.app">Пройти тест</a>
+              <a href="https://github.com/AbaD3v/DidaType" aria-label="Исходный код DidaType на GitHub">GitHub</a>
+            </div>
+          </div>
+        </article>
         <article class="feature">
-          <div class="cover cover-shop" aria-hidden="true">
-            <div class="shop-diagram"><i></i><i></i><i></i></div>
+          <div class="cover cover-flight" data-model="flight">
+            <img class="project-poster" src="./assets/models/flight.webp" width="660" height="420" loading="lazy" decoding="async" alt="">
+            <canvas class="project-canvas" width="660" height="420" aria-hidden="true"></canvas>
+            <button class="model-open" type="button" aria-haspopup="dialog" aria-controls="model-inspector" hidden>Рассмотреть 3D</button>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">Доставка</p>
+            <h3>Q’fly</h3>
+            <p>Веб-проект сервиса доставки посылок дронами в Астане с картой и описанием доставки.</p>
+            <ul class="stack" aria-label="Технологии"><li>Next.js</li><li>Supabase</li><li>2GIS</li></ul>
+            <div class="feature-links">
+              <a class="project-demo" href="https://qfly.vercel.app">Открыть Q’fly</a>
+              <a href="https://github.com/AbaD3v/qfly" aria-label="Исходный код Q’fly на GitHub">GitHub</a>
+            </div>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="cover cover-shop" data-model="shop">
+            <img class="project-poster" src="./assets/models/shop.webp" width="660" height="420" loading="lazy" decoding="async" alt="">
+            <canvas class="project-canvas" width="660" height="420" aria-hidden="true"></canvas>
+            <button class="model-open" type="button" aria-haspopup="dialog" aria-controls="model-inspector" hidden>Рассмотреть 3D</button>
           </div>
           <div class="feature-body">
             <p class="eyebrow">ИНТЕРНЕТ-МАГАЗИН</p>
@@ -148,26 +140,113 @@
             </div>
           </div>
         </article>
+        <article class="feature">
+          <div class="cover cover-civic" data-model="civic">
+            <img class="project-poster" src="./assets/models/civic.webp" width="660" height="420" loading="lazy" decoding="async" alt="">
+            <canvas class="project-canvas" width="660" height="420" aria-hidden="true"></canvas>
+            <button class="model-open" type="button" aria-haspopup="dialog" aria-controls="model-inspector" hidden>Рассмотреть 3D</button>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">ИИ и данные</p>
+            <h3>Democracy.kz AI</h3>
+            <p>Бэкенд чат-бота с поиском по данным в Supabase и потоковой выдачей ответов Gemini.</p>
+            <ul class="stack" aria-label="Технологии"><li>FastAPI</li><li>Supabase</li><li>Gemini</li></ul>
+            <a href="https://github.com/AbaD3v/DemocracyKzAI" aria-label="Исходный код Democracy.kz AI на GitHub">Код на GitHub</a>
+          </div>
+        </article>
+        <article class="feature feature-wide">
+          <div class="cover cover-kindergarten" data-model="kindergarten">
+            <img class="project-poster" src="./assets/models/kindergarten.webp" width="660" height="420" loading="lazy" decoding="async" alt="">
+            <canvas class="project-canvas" width="660" height="420" aria-hidden="true"></canvas>
+            <button class="model-open" type="button" aria-haspopup="dialog" aria-controls="model-inspector" hidden>Рассмотреть 3D</button>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">Заказной проект</p>
+            <h3>Ақ-Бота</h3>
+            <p>Двуязычный сайт детского сада с информацией о группах, кружках и материалами для родителей.</p>
+            <div class="feature-links">
+              <a class="project-demo" href="https://aq-bota.kz/">Открыть сайт</a>
+              <a href="https://github.com/AbaD3v/Aq-bota" aria-label="Исходный код сайта Ақ-Бота на GitHub">GitHub</a>
+            </div>
+          </div>
+        </article>
+        <article class="feature feature-wide">
+          <div class="cover cover-chat" data-model="chat">
+            <img class="project-poster" src="./assets/models/chat.webp" width="660" height="420" loading="lazy" decoding="async" alt="">
+            <canvas class="project-canvas" width="660" height="420" aria-hidden="true"></canvas>
+            <button class="model-open" type="button" aria-haspopup="dialog" aria-controls="model-inspector" hidden>Рассмотреть 3D</button>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">ЯЗЫКОВЫЕ МОДЕЛИ</p>
+            <h3>EvoMind</h3>
+            <p>Веб-чат с MoonAI на базе Qwen3. История диалогов позволяет возвращаться к предыдущим беседам.</p>
+            <ul class="stack" aria-label="Технологии"><li>JavaScript</li><li>MoonAI</li><li>Qwen3</li></ul>
+            <div class="feature-links">
+              <a class="project-demo" href="https://evomind-two.vercel.app">Открыть чат</a>
+              <a href="https://github.com/AbaD3v/EvoMind" aria-label="Исходный код EvoMind на GitHub">GitHub</a>
+            </div>
+          </div>
+        </article>
+        <article class="feature feature-wide">
+          <div class="cover cover-sql" data-model="sql">
+            <img class="project-poster" src="./assets/models/sql.webp" width="660" height="420" loading="lazy" decoding="async" alt="">
+            <canvas class="project-canvas" width="660" height="420" aria-hidden="true"></canvas>
+            <button class="model-open" type="button" aria-haspopup="dialog" aria-controls="model-inspector" hidden>Рассмотреть 3D</button>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">ПРАКТИКУМ</p>
+            <h3>CodeProof SQL</h3>
+            <p>15 задач на базе интернет-магазина. Можно изучить схему, написать запрос в редакторе и проверить результат в SQLite прямо в браузере.</p>
+            <ul class="stack" aria-label="Технологии"><li>SQLite</li><li>WebAssembly</li><li>CodeMirror</li></ul>
+            <div class="feature-links">
+              <a href="https://github.com/AbaD3v/AbaD3v-AIU" aria-label="Исходный код CodeProof SQL на GitHub">GitHub</a>
+            </div>
+          </div>
+        </article>
+        <article class="feature feature-wide">
+          <div class="cover cover-voice" data-model="voice">
+            <img class="project-poster" src="./assets/models/voice.webp" width="660" height="420" loading="lazy" decoding="async" alt="">
+            <canvas class="project-canvas" width="660" height="420" aria-hidden="true"></canvas>
+            <button class="model-open" type="button" aria-haspopup="dialog" aria-controls="model-inspector" hidden>Рассмотреть 3D</button>
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">РЕЧЬ И ИИ</p>
+            <h3>Voxa</h3>
+            <p>Практика русского, английского и казахского через голосовые диалоги с ИИ. После разговора Voxa разбирает ошибки. Я основатель и ведущий разработчик проекта.</p>
+            <ul class="stack" aria-label="Технологии"><li>React</li><li>FastAPI</li></ul>
+            <div class="feature-links">
+              <a class="project-demo" href="https://aba-d3v-frontend.vercel.app">Открыть Voxa</a>
+              <a href="https://github.com/AbaD3v/AbaD3v-Frontend" aria-label="Исходный код Voxa на GitHub">GitHub</a>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
     <section class="catalog section wrap" id="catalog" aria-labelledby="catalog-title">
       <div class="section-head">
         <h2 id="catalog-title">Каталог проектов<span>.</span></h2>
-        <p class="section-meta" id="catalog-count" aria-live="polite"></p>
+        <p class="section-meta" id="catalog-count" role="status" hidden></p>
       </div>
-      <div id="filters" class="filters" aria-label="Фильтры проектов" hidden>
-        <div class="tabs" aria-label="Категории проектов">
-          <button type="button" data-category="all" aria-pressed="true">Все</button>
-          <button type="button" data-category="demo" aria-pressed="false">С демо</button>
-          <button type="button" data-category="ai" aria-pressed="false">ИИ и данные</button>
-          <button type="button" data-category="web" aria-pressed="false">Веб</button>
-          <button type="button" data-category="edu" aria-pressed="false">Обучение</button>
-          <button type="button" data-category="other" aria-pressed="false">Другие</button>
+      <div id="filters" class="filters" role="search" aria-label="Поиск и фильтры по проектам" hidden>
+        <div class="search-row">
+          <label class="search"><span class="search-icon" aria-hidden="true"></span><input type="search" id="query" placeholder="Проект или технология" aria-label="Найти проект или технологию" aria-controls="project-list"></label>
+          <button class="catalog-reset" id="catalog-reset" type="button" hidden>Сбросить фильтры</button>
         </div>
-        <label class="search"><span class="search-icon" aria-hidden="true"></span><input type="search" id="query" placeholder="Проект или технология" aria-label="Найти проект или технологию"></label>
+        <div class="tabs" role="group" aria-label="Категории проектов">
+          <button type="button" data-category="all" aria-pressed="true" aria-controls="project-list">Все</button>
+          <button type="button" data-category="demo" aria-pressed="false" aria-controls="project-list">С демо</button>
+          <button type="button" data-category="model" aria-pressed="false" aria-controls="project-list">3D в каталоге</button>
+          <button type="button" data-category="ai" aria-pressed="false" aria-controls="project-list">ИИ и данные</button>
+          <button type="button" data-category="web" aria-pressed="false" aria-controls="project-list">Веб</button>
+          <button type="button" data-category="edu" aria-pressed="false" aria-controls="project-list">Обучение</button>
+          <button type="button" data-category="other" aria-pressed="false" aria-controls="project-list">Другие</button>
+        </div>
       </div>
       <div id="project-list" class="project-list"></div>
-      <p class="empty" id="empty" hidden>По этому запросу ничего не найдено.</p>
+      <div class="empty" id="empty" hidden>
+        <h3>Нет совпадений</h3>
+        <p>Попробуйте другой запрос или сбросьте фильтры.</p>
+      </div>
       <noscript><p>Включите JavaScript для просмотра каталога или откройте проекты на <a href="https://github.com/AbaD3v?tab=repositories">GitHub</a> и <a href="https://huggingface.co/AbaD3v">Hugging Face</a>.</p></noscript>
     </section>
     <section class="models section wrap" id="models" aria-labelledby="models-title">
@@ -223,9 +302,25 @@
       <div class="profile-links">
         <a href="https://github.com/AbaD3v"><strong>GitHub</strong><span>Репозитории и исходный код</span></a>
         <a href="https://huggingface.co/AbaD3v"><strong>Hugging Face</strong><span>Модели и демо</span></a>
+        <a href="https://www.linkedin.com/in/abzal-mametzhan-63264a388/"><strong>LinkedIn</strong><span>Профессиональный профиль</span></a>
       </div>
     </section>
   </main>
   <footer class="footer wrap"><span>Маметжан Абзал · AbaD3v</span><a href="#top">В начало</a></footer>
+  <dialog class="model-inspector" id="model-inspector" aria-labelledby="inspector-title">
+    <div class="inspector-header">
+      <h2 id="inspector-title"></h2>
+      <button class="inspector-control" type="button" data-close autofocus>Закрыть</button>
+    </div>
+    <div class="inspector-stage">
+      <canvas width="924" height="588" tabindex="0" aria-label="Вращение модели клавишами со стрелками" aria-describedby="inspector-help"></canvas>
+    </div>
+    <div class="inspector-tools">
+      <label class="inspector-zoom">Масштаб <input type="range" min="75" max="165" value="115" step="5"></label>
+      <button class="inspector-control" type="button" data-play aria-pressed="false">Анимация</button>
+      <button class="inspector-control" type="button" data-reset>Сбросить вид</button>
+    </div>
+    <p class="inspector-help" id="inspector-help">Потяните модель мышью или пальцем. С клавиатуры её можно повернуть стрелками.</p>
+  </dialog>
 </body>
 </html>
