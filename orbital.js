@@ -142,14 +142,12 @@ function createProgram(gl) {
   return null;
 }
 
-function mountOrbit(art) {
-  const canvas = art.querySelector('canvas');
-  const toggle = art.parentElement.querySelector('.orbital-toggle');
+function createPortal(canvas) {
   const gl = canvas.getContext('webgl', { alpha: true, antialias: true, powerPreference: 'low-power' });
-  if (!gl) return;
+  if (!gl) return null;
 
   const program = createProgram(gl);
-  if (!program) return;
+  if (!program) return null;
 
   const vertices = makePortal();
   gl.useProgram(program);
@@ -169,22 +167,13 @@ function mountOrbit(art) {
   gl.enable(gl.BLEND);
   gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
-  const motion = matchMedia('(prefers-reduced-motion: reduce)');
-  let paused = motion.matches;
-  let visible = false;
-  let frame = 0;
-  let lastTime = null;
-  let elapsed = 0;
-  let active = true;
-
-  function draw() {
-    if (!active) return;
+  function draw(elapsed) {
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform1f(time, elapsed);
     gl.drawArrays(gl.LINES, 0, vertices.length / 6);
   }
 
-  function resize() {
+  function resize(elapsed) {
     const { width, height } = canvas.getBoundingClientRect();
     const density = Math.min(window.devicePixelRatio || 1, 1.6);
     canvas.width = Math.max(1, Math.round(width * density));
@@ -192,21 +181,38 @@ function mountOrbit(art) {
     gl.viewport(0, 0, canvas.width, canvas.height);
     const scale = Math.min(canvas.width, canvas.height) * 0.565;
     gl.uniform2f(fit, scale / canvas.width, scale / canvas.height);
-    draw();
+    draw(elapsed);
   }
+
+  return { draw, resize };
+}
+
+function mountHero(art) {
+  const canvas = art.querySelector('canvas');
+  const toggle = art.parentElement.querySelector('.orbital-toggle');
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  const watchVisibility = 'IntersectionObserver' in window;
+  let paused = motion.matches;
+  let visible = !watchVisibility;
+  let portal = 'ResizeObserver' in window ? createPortal(canvas) : null;
+  let frame = 0;
+  let lastTime = null;
+  let elapsed = 0;
 
   function animate(now) {
     if (lastTime !== null) elapsed += Math.min(now - lastTime, 50) / 1000;
     lastTime = now;
-    draw();
+    portal.draw(elapsed);
     frame = requestAnimationFrame(animate);
   }
 
   function sync() {
+    const moving = !paused && visible && !document.hidden;
+    art.classList.toggle('is-moving', moving);
     toggle.classList.toggle('is-paused', paused);
-    toggle.setAttribute('aria-label', paused ? 'Запустить вращение портала' : 'Приостановить вращение портала');
+    toggle.setAttribute('aria-label', paused ? 'Запустить анимацию первого экрана' : 'Приостановить анимацию первого экрана');
     toggle.title = toggle.getAttribute('aria-label');
-    if (!paused && visible && !document.hidden && active) {
+    if (moving && portal) {
       if (!frame) frame = requestAnimationFrame(animate);
     } else {
       cancelAnimationFrame(frame);
@@ -215,15 +221,27 @@ function mountOrbit(art) {
     }
   }
 
-  const sizeObserver = new ResizeObserver(resize);
-  const viewObserver = new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting;
-    sync();
-  });
-  sizeObserver.observe(art);
-  viewObserver.observe(art);
+  if (portal) {
+    const sizeObserver = new ResizeObserver(() => portal?.resize(elapsed));
+    sizeObserver.observe(art);
+    canvas.addEventListener('webglcontextlost', () => {
+      portal = null;
+      sizeObserver.disconnect();
+      art.classList.remove('is-rendered');
+      sync();
+    });
+    portal.resize(elapsed);
+    art.classList.add('is-rendered');
+  }
+  if (watchVisibility) {
+    const viewObserver = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      sync();
+    });
+    viewObserver.observe(art);
+  }
   document.addEventListener('visibilitychange', sync);
-  motion.addEventListener('change', event => {
+  motion.addEventListener?.('change', event => {
     paused = event.matches;
     sync();
   });
@@ -231,20 +249,9 @@ function mountOrbit(art) {
     paused = !paused;
     sync();
   });
-  canvas.addEventListener('webglcontextlost', () => {
-    active = false;
-    sizeObserver.disconnect();
-    viewObserver.disconnect();
-    art.classList.remove('is-rendered');
-    toggle.hidden = true;
-    sync();
-  });
-
-  resize();
-  art.classList.add('is-rendered');
   toggle.hidden = false;
   sync();
 }
 
 const art = document.querySelector('.hero-art');
-if (art && 'ResizeObserver' in window && 'IntersectionObserver' in window) mountOrbit(art);
+if (art) mountHero(art);

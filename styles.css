@@ -69,7 +69,7 @@ h1, h2, h3, p, dl { margin: 0; }
   position: relative; isolation: isolate; display: grid; align-items: center;
   min-height: clamp(530px, 50vw, 660px);
   overflow: hidden; border: 1px solid #3d2d25; border-radius: clamp(15px, 2.4vw, 28px);
-  background: #171117 url('./assets/hero-atmosphere.webp') 65% center / cover no-repeat;
+  background: #171117;
 }
 .hero-copy { padding: clamp(1.5rem, 5.1vw, 4.75rem); position: relative; z-index: 1; }
 .eyebrow { color: var(--hot); font: 680 .875rem/1.4 var(--font-text); letter-spacing: .088em; text-transform: uppercase; }
@@ -88,12 +88,36 @@ h1 { font-family: var(--font-display); font-size: clamp(4.5rem, calc(12.6vw + .5
 .subtle { border-color: #785d50; background: #221a18d9; }
 .subtle:hover { border-color: var(--hot); }
 .hero-art { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.hero-backdrop {
+  position: absolute; inset: -4%;
+  background: url('./assets/hero-atmosphere.webp') 65% center / cover no-repeat;
+  animation: backdrop-drift 20s ease-in-out infinite paused;
+}
+.hero-mist {
+  position: absolute; inset: -7% -11% -10% 18%; z-index: 1;
+  background: url('./assets/hero-atmosphere.webp') 75% 42% / cover no-repeat;
+  filter: blur(13px) brightness(1.27);
+  mix-blend-mode: screen;
+  mask-image: radial-gradient(ellipse at 63% 54%, #000 8%, #000c 32%, transparent 68%);
+  animation: mist-drift 15s ease-in-out infinite paused;
+}
+.hero-art.is-moving .hero-backdrop, .hero-art.is-moving .hero-mist { animation-play-state: running; }
+@keyframes backdrop-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.025); }
+  34% { transform: translate3d(-1.25%, .95%, 0) scale(1.09); }
+  70% { transform: translate3d(.85%, -.75%, 0) scale(1.055); }
+}
+@keyframes mist-drift {
+  0%, 100% { transform: translate3d(2%, 1%, 0) scale(1.04); opacity: .20; }
+  32% { transform: translate3d(-2.8%, -2.9%, 0) scale(1.12); opacity: .47; }
+  65% { transform: translate3d(-.6%, -1.4%, 0) scale(1.17); opacity: .30; }
+}
 .hero-glow, .orbital-canvas, .hero-art::before { position: absolute; inset: 0 0 0 33%; width: 67%; height: 100%; }
-.hero-glow { background: radial-gradient(ellipse at 50% 51%, transparent 24%, #f276293b 44%, transparent 67%); }
-.hero-art::before, .orbital-canvas { filter: drop-shadow(0 0 8px #ff633fd0); }
+.hero-glow { z-index: 1; background: radial-gradient(ellipse at 50% 51%, transparent 24%, #f276293b 44%, transparent 67%); }
+.hero-art::before, .orbital-canvas { z-index: 2; filter: drop-shadow(0 0 8px #ff633fd0); }
 .hero-art::before { content: ''; background: center / contain no-repeat url('./assets/portal-static.webp'); }
 .hero-art::after {
-  content: ''; position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0; z-index: 3;
   background: linear-gradient(90deg, #100e12 2%, #100e12ef 24%, #100e128f 43%, transparent 69%),
     linear-gradient(0deg, #120d12be, transparent 34%);
 }
@@ -252,7 +276,9 @@ a.project-demo:hover, .feature-body a.project-demo:hover { border-color: var(--h
   .nav a { font-size: .875rem; }
   .brand { gap: .35rem; }
   .mark { width: 28px; height: 28px; }
-  .hero { width: calc(100% - 24px); min-height: 510px; align-items: start; background-position: 75% 64%; }
+  .hero { width: calc(100% - 24px); min-height: 510px; align-items: start; }
+  .hero-backdrop { background-position: 75% 64%; }
+  .hero-mist { inset: 20% -14% -8% -9%; background-position: 77% 68%; }
   .hero-copy { padding: 2.2rem 1.3rem .9rem; }
   h1 { font-size: clamp(3rem, calc(14.4vw + .65rem), 6.25rem); }
   .hero-lead { margin-top: 1rem; }
